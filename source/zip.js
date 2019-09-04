@@ -13,6 +13,9 @@ const zip = (...args) => {
     // ищем объекты которые надо объединить
     for (var arg of args) {
         if (arg) {
+            if (typeof arg !== 'object') {
+                throw TypeError("Argument is not an object")
+            }
             for (var prop_name of Object.keys(arg)) {
                 if (typeof arg[prop_name] === 'object') {
                     if (!subobjects[prop_name]) {
@@ -22,7 +25,7 @@ const zip = (...args) => {
                 }
             }
         } else {
-            throw TypeError('undefined argument')
+            throw TypeError("Argument is undefined")
         }
     }
 
