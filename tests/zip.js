@@ -74,4 +74,29 @@ QUnit.module('Тестируем функцию zip', function () {
 		};
 		assert.deepEqual(zip({name: 'age'}, {value: 42}, {name: 'cost'}, {value: -6}), obj);
 	});
+
+	QUnit.test('Функция правильно реагирует на некорректные аргументы', function(assert) {
+		assert.throws(
+			function () {
+				zip(undefined);
+			}),
+			TypeError("Argument is not an object")
+
+		assert.throws(
+			function () {
+				zip('string');
+			}),
+			TypeError("Argument is undefined")
+	});
+
+	QUnit.test('Функция работает с объектами различной глубины вложенности', function(assert) {
+		assert.deepEqual(zip({a:{b:{d:2}}}, {a:{b:{c:1,d:1}}}), {a:{b:{c:1, d:2}}})
+		assert.deepEqual(
+			zip(
+				{a:{b:{d:'first'}, s:'first'}, s: 'first'},
+				{a:{b:{c:1,d:'second'}}}
+			),
+			{a:{b:{c:1, d:'first'}, s:'first'}, s:'first'}
+		)
+	});
 });
