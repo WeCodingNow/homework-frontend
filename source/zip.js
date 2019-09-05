@@ -42,11 +42,11 @@ const zip = (...args) => {
 
     // соединяем объекты на разных уровнях вложенности
     const result = levels.reduceRight((accum, curVal) => {
-        for (const key in curVal) {
+        Object.keys(curVal).forEach((key) => {
             if (curVal[key]) {
                 Object.assign(curVal[key], accum)
             }
-        }
+        })
         return curVal
     });
 
