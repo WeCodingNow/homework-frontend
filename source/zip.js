@@ -22,7 +22,7 @@ const zip = (...args) => {
                     if (!subobjects[propName]) {
                         subobjects[propName] = [];
                     }
-                    subobjects[prop_name].push(arg[propName]);
+                    subobjects[propName].push(arg[propName]);
                 }
             }
         } else {
