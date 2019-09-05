@@ -6,37 +6,49 @@
  * @return {object} Merged objects
  */
 const zip = (...args) => {
-    // чтобы не перезаписывать первое встретившееся поле
-    args = args.reverse();
-
-    const subobjects = {};
-
-    // ищем объекты которые надо объединить
-    for (const arg of args) {
-        if (arg) {
-            if (typeof arg !== 'object') {
-                throw TypeError('Argument is not an object');
-            }
-            for (const propName of Object.keys(arg)) {
-                if (typeof arg[propName] === 'object') {
-                    if (!subobjects[propName]) {
-                        subobjects[propName] = [];
-                    }
-                    subobjects[propName].push(arg[propName]);
-                }
-            }
-        } else {
+    args.forEach((arg) => {
+        if (!arg) {
             throw TypeError('Argument is undefined');
+        } else if (typeof arg !== 'object') {
+            throw TypeError('Argument is not an object');
+        }
+    });
+
+    let queue1 = args;
+    let queue2 = [];
+    const levels = [{}];
+
+    // подсчитываем объекты на разных уровнях вложенности
+    // с помощью алгоритма обхода в ширину
+    while (queue1.length > 0) {
+        const obj = queue1.pop();
+
+        Object.assign(levels[levels.length - 1], obj);
+
+        if (obj) {Object.keys(obj).forEach((key) => {
+            if (typeof obj[key] === 'object') {
+                queue2.push(obj[key]);
+            }
+        })};
+
+        if (queue1.length == 0) {
+            queue1 = queue2;
+            queue2 = [];
+            if (queue1.length > 0) {
+                levels.push({});
+            }
         }
     }
 
-    // рекурсивно сливаем объекты в иерархии основного объекта
-    for (const idx of Object.keys(subobjects)) {
-        subobjects[idx] = (subobjects[idx].length > 1) ?
-            zip(...subobjects[idx]) : subobjects[idx][0];
-    }
+    // соединяем объекты на разных уровнях вложенности
+    const result = levels.reduceRight((accum, curVal) => {
+        for (const key in curVal) {
+            if (curVal[key]) {
+                Object.assign(curVal[key], accum)
+            }
+        }
+        return curVal
+    });
 
-    return Object.assign(...args, subobjects);
+    return result
 };
-
-zip({});
