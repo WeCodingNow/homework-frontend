@@ -32,11 +32,8 @@ const zip = (...args) => {
 
     // рекурсивно сливаем объекты в иерархии основного объекта
     for (const idx of Object.keys(subobjects)) {
-        if (subobjects[idx].length > 1) {
-            subobjects[idx] = zip(...subobjects[idx]);
-        } else {
-            subobjects[idx] = subobjects[idx][0];
-        }
+        subobjects[idx] = (subobjects[idx].length > 1) ?
+            zip(...subobjects[idx]) : subobjects[idx][0];
     }
 
     return Object.assign(...args, subobjects);
