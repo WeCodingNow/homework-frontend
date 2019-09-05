@@ -38,5 +38,5 @@ const zip = (...args) => {
         }
     }
 
-    return Object.assign({}, ...args, subobjects)
+    return Object.assign(...args, subobjects)
 }
