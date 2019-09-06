@@ -79,14 +79,16 @@ QUnit.module('Тестируем функцию zip', function () {
 		assert.throws(
 			function () {
 				zip(undefined);
-			}),
-			TypeError('Argument is not an object')
+            },
+			TypeError('Argument is undefined')
+        );
 
 		assert.throws(
 			function () {
 				zip('string');
-			}),
-			TypeError('Argument is undefined')
+			},
+            TypeError('Argument is not an object')
+        );
 	});
 
 	QUnit.test('Функция работает с объектами различной глубины вложенности', function(assert) {
