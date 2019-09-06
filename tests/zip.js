@@ -90,13 +90,28 @@ QUnit.module('Тестируем функцию zip', function () {
 	});
 
 	QUnit.test('Функция работает с объектами различной глубины вложенности', function(assert) {
-		assert.deepEqual(zip({a:{b:{d:2}}}, {a:{b:{c:1,d:1}}}), {a:{b:{c:1, d:2}}})
-		assert.deepEqual(
-			zip(
-				{a:{b:{d:'first'}, s:'first'}, s: 'first'},
-				{a:{b:{c:1,d:'second'}}}
-			),
-			{a:{b:{c:1, d:'first'}, s:'first'}, s:'first'}
-		)
-	});
+        const obj1_1 = {a: {b: {d: 2}}};
+        const obj1_2 = {a: {b: {c: 1,d: 1}}};
+        const expRes1 = {a: {b: {c: 1, d: 2}}};
+
+        assert.deepEqual(zip(obj1_1, obj1_2), expRes1);
+
+        const obj2_1 = {a: {b: {d: 'first'}, s: 'first'}, s: 'first'}; 
+        const obj2_2 = {a: {b: {c: 2, d: 'second'}}};
+        const expRes2 = {a:{b:{c: 2, d: 'first'}, s: 'first'}, s: 'first'}; 
+
+        assert.deepEqual(zip(obj2_1, obj2_2), expRes2);
+        
+        const obj3_1 = {a: {b: 3}};
+        const obj3_2 = {c: {b: 4}};
+        const expRes3 = {a: {b: 3}, c: {b: 4}};
+
+        assert.deepEqual(zip(obj3_1, obj3_2), expRes3)
+
+        const obj4_1 = {a: {b: 3}};
+        const obj4_2 = {a: {b: 4}};
+        const expRes4 = {a: {b: 3}};
+
+        assert.deepEqual(zip(obj4_1, obj4_2), expRes4)
+    });
 });
